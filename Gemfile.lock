@@ -82,20 +82,20 @@ GEM
       redis (~> 3.0)
       resque (~> 1.25)
       rufus-scheduler (~> 3.0)
-    rspec (3.4.0)
-      rspec-core (~> 3.4.0)
-      rspec-expectations (~> 3.4.0)
-      rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.4)
-      rspec-support (~> 3.4.0)
-    rspec-expectations (3.4.0)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.2)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-mocks (3.4.1)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.4.0)
-    rspec-support (3.4.1)
-    ruby-kafka (0.3.11)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
+    ruby-kafka (0.3.12)
     rufus-scheduler (3.2.1)
     sinatra (1.4.7)
       rack (~> 1.5)
@@ -117,7 +117,7 @@ DEPENDENCIES
   octocore!
   parallel_tests (~> 2.5.0, >= 2.5.0)
   rake
-  rspec (~> 3.4.0, >= 3.4.0)
+  rspec
 
 BUNDLED WITH
    1.11.2

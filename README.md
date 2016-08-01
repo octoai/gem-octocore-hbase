@@ -1,32 +1,52 @@
-# Gems #
+# octo-core
 
-Contains all the ruby gems specific to Octomatic.
+This is the Octomatic Enterprise Core gem. It provides most of the ORM stuff. Class and modules for different tables.
 
-# Commit Guide
 
-Whenever you add a new gem, make sure to update `build.sh` also. Else, it won'tbe build.
+**Rake Tasks**
+
+```bash
+rake cequel:keyspace:create  # Initialize Cassandra keyspace
+rake cequel:keyspace:drop    # Drop Cassandra keyspace
+rake octo:init               # Create keyspace and tables for all defined models
+rake octo:migrate            # Synchronize all models defined in `lib/octocore/models' with Cassandra database schema
+rake octo:reset              # Drop keyspace if exists, then create and migrate
+rake spec                    # Run RSpec code examples
+```
 
 # Building
 
-## Build all gems
+```bash
+./bin/clean_setup.sh
+```
 
-Provided is a `build.sh` script. Execute it. It will build all the gems
+# Specs
 
-## Individual Build
+```
+lang=bash
+rake spec
+```
 
-If you want to build a specific gem peform these steps
+# Verifying connectivity
 
-- `cd` to the gem's dir
-- `gem build gemname.gemspec` For the gemspec file that is present. This will create a .gem file
-- Execute `gem install gemname-0.x.y.gem`. This will install the gem alongwith it's rdoc.
+You can use the following set of commands in `irb` to verify all things working with this gem. Execute it from irb in PROJ_DIR.
 
+```ruby
+%w(octocore).each { |x| require x }
+config_file = 'lib/octocore/config/config.yml'
+Octo.connect_with_config_file(config_file)
+```
 
-## Note:
+# Creating fake stream
 
-- If permissions required then type 'sudo' for ubuntu and give super user permissions to install gem
-- If any gem fail because of dependencies, try install dependencies manually.
+It ships with a utility called `fakestream`. It will automatically stream random data. To use just open your console and type
 
+```
+fakestream
+```
 
-# ReadME
+Optionally provide a config file for octo to connect as 
 
-Each gem provides their own README. Refer to the gem for this section.
+```
+fakestream /path/to/octo_config.yml
+```
