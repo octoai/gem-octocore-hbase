@@ -13,7 +13,9 @@ DESC
   s.authors     = ['Pranav Prakash']
   s.email       = 'pp@octo.ai'
   s.files       = Dir['lib/**/*.rb', 'spec/**/*.rb', '[A-Z]*', 'lib/**/*.yml']
+
   s.executables << 'fakestream'
+  s.executables << 'octocore-admin'
 
   s.homepage    =
     'http://phab.octo.ai/diffusion/GEMS/'
