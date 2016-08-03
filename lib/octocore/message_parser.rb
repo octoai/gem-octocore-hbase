@@ -2,7 +2,7 @@ require 'json'
 require 'set'
 
 module Octo
-  # Module for converting kafka messages 
+  # Message abstraction module 
   module Message
 
     # Parsing kafka messages for octo consumer
@@ -76,19 +76,20 @@ module Octo
 
     end
 
+    # To handle message abstraction
     class Message
       include MessageParser
       
       # Converting Message hash in Octo compatible form
       # @param [Hash] Message Hash
       def initialize(msg)
-        @message = parse(msg)
+        @message = msg
       end
 
       # To get hash message
       # @return [Hash] Message Hash
       def to_h
-        @message
+        parse(@message)
       end
       
     end
