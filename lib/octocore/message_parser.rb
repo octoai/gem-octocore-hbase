@@ -2,13 +2,17 @@ require 'json'
 require 'set'
 
 module Octo
+  # Module for converting kafka messages 
   module Message
 
+    # Parsing kafka messages for octo consumer
     module MessageParser
     
+      # Parsing Message hash in Octo compatible form
+      # @param [Hash] Message Hash
+      # @return [Hash] Hash in Octo form
       def parse(msg)
-        msg2 = JSON.parse(msg)
-        msg = msg2
+        msg = JSON.parse(msg)
         m = { event_name: msg['event_name'] }
         case msg['event_name']
         when 'funnel_update'
@@ -75,10 +79,14 @@ module Octo
     class Message
       include MessageParser
       
+      # Converting Message hash in Octo compatible form
+      # @param [Hash] Message Hash
       def initialize(msg)
         @message = parse(msg)
       end
 
+      # To get hash message
+      # @return [Hash] Message Hash
       def to_h
         @message
       end

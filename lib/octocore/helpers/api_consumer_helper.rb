@@ -358,7 +358,6 @@ module Octo
         end
       end
 
-      
     end
   end
 end
