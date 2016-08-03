@@ -9,13 +9,13 @@ require 'octocore/config'
 RSpec::Core::RakeTask.new('spec')
 
 task :environment do
-  config_dir = ENV['CONFIG_DIR'] || 'lib/octocore/config/'
+  config_dir = 'lib/octocore/config'
   config = {}
-  Dir[config_dir + '**{,/*/**}/*.yml'].each do |file|
+  Dir['**{,/*/**}/*.yml'].each do |file|
     _config = YAML.load_file(file)
     if _config
       puts "loading from file: #{ file }"
-      config = config.merge(_config.deep_symbolize_keys)
+      config.merge!(_config.deep_symbolize_keys)
     end
   end
   Octo.load_config config
@@ -36,7 +36,7 @@ end
 namespace :octo do
 
   desc 'Create keyspace and tables for all defined models'
-  task :init => %w(environment cequel:keyspace:create octo:migrate)
+  task :init => %w(cequel:keyspace:create octo:migrate)
 
   desc 'Drop keyspace if exists, then create and migrate'
   task :reset => :environment do
@@ -136,4 +136,3 @@ def migrate
     end
   end
 end
-
