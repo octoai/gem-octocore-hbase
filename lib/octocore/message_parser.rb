@@ -79,6 +79,8 @@ module Octo
     # To handle message abstraction
     class Message
       include MessageParser
+
+      attr_reader :message
       
       # Converting Message hash in Octo compatible form
       # @param [Hash] Message Hash

@@ -4,8 +4,10 @@ require 'set'
 module Octo
   module Helpers
 
+    # Helper Module for Octo Consumer
     module ApiConsumerHelper
       extend Cequel::Metal
+
       # Get all the valid events
       # @return [Set<Symbol>] Valid events globally
       def valid_events
@@ -20,96 +22,103 @@ module Octo
         Set.new(%w(app.init app.login app.logout page.view productpage.view update.profile))
       end
 
+      # Handles Kafka messages and perform required operations
+      # @param [Hash] msg Hash Message
       def handle(msg)
-          msg_dump = msg
-          msg_obj = Octo::Message::Message.new(msg)
-          msg = msg_obj.to_h
-          eventName = msg.delete(:event_name)
-          if (valid_events.include?eventName)
-            enterprise = checkEnterprise(msg)
-            unless enterprise
-              Octo.logger.info 'Unable to find enterprise. Something\'s wrong'
-            end
-            user = checkUser(enterprise, msg)
-
-            hook_opts = {
-                enterprise: enterprise,
-                user: user
-            }
-
-            if api_events.include?eventName
-              hook_opts[:event] = register_api_event(enterprise, eventName)
-              Octo::ApiTrack.new(customid: msg[:id],
-                                 created_at: Time.now,
-                                 json_dump: msg_dump,
-                                 type: eventName).save!
-            end
-
-            case eventName
-              when 'app.init'
-                Octo::AppInit.new(enterprise: enterprise,
-                                  created_at: Time.now,
-                                  userid: user.id).save!
-                updateUserDeviceDetails(user, msg)
-                hook_opts.merge!({type: 'init'})
-                call_hooks(eventName, hook_opts)
-              when 'app.login'
-                Octo::AppLogin.new(enterprise: enterprise,
-                                   created_at: Time.now,
-                                   userid: user.id).save!
-                updateUserDeviceDetails(user, msg)
-                call_hooks(eventName, hook_opts)
-              when 'app.logout'
-                event = Octo::AppLogout.new(enterprise: enterprise,
-                                            created_at: Time.now,
-                                            userid: user.id).save!
-                updateUserDeviceDetails(user, msg)
-                call_hooks(eventName, hook_opts)
-              when 'page.view'
-                page, categories, tags = checkPage(enterprise, msg)
-                Octo::PageView.new(enterprise: enterprise,
-                                   created_at: Time.now,
-                                   userid: user.id,
-                                   routeurl: page.routeurl
-                ).save!
-                hook_opts.merge!({type: page.routeurl})
-                updateUserDeviceDetails(user, msg)
-                call_hooks(eventName, hook_opts)
-              when 'productpage.view'
-                product, categories, tags = checkProduct(enterprise, msg)
-                Octo::ProductPageView.new(
-                                         enterprise: enterprise,
-                                         created_at: Time.now,
-                                         userid: user.id,
-                                         product_id: product.id
-                ).save!
-                updateUserDeviceDetails(user, msg)
-                hook_opts.merge!({ product: product,
-                                   categories: categories,
-                                   tags: tags,
-                                   type: product.routeurl
-                                 })
-                call_hooks(eventName, hook_opts)
-              when 'update.profile'
-                checkUserProfileDetails(enterprise, user, msg)
-                updateUserDeviceDetails(user, msg)
-                call_hooks(eventName, hook_opts)
-              when 'update.push_token'
-                checkPushToken(enterprise, user, msg)
-                checkPushKey(enterprise, msg)
-              when 'funnel_update'
-                checkRedisSession(enterprise,msg)
-            end
+        msg_obj = Octo::Message::Message.new(msg)
+        msg = msg_obj.to_h
+        eventName = msg.delete(:event_name)
+        if (valid_events.include?eventName)
+          enterprise = checkEnterprise(msg)
+          unless enterprise
+            Octo.logger.info 'Unable to find enterprise. Something\'s wrong'
           end
+          user = checkUser(enterprise, msg)
+
+          hook_opts = {
+              enterprise: enterprise,
+              user: user
+          }
+
+          if api_events.include?eventName
+            hook_opts[:event] = register_api_event(enterprise, eventName)
+            Octo::ApiTrack.new(customid: msg[:id],
+                               created_at: Time.now,
+                               json_dump: msg_obj.message,
+                               type: eventName).save!
+          end
+
+          case eventName
+          when 'app.init'
+            Octo::AppInit.new(enterprise: enterprise,
+                              created_at: Time.now,
+                              userid: user.id).save!
+            updateUserDeviceDetails(user, msg)
+            hook_opts.merge!({type: 'init'})
+            call_hooks(eventName, hook_opts)
+          when 'app.login'
+            Octo::AppLogin.new(enterprise: enterprise,
+                               created_at: Time.now,
+                               userid: user.id).save!
+            updateUserDeviceDetails(user, msg)
+            call_hooks(eventName, hook_opts)
+          when 'app.logout'
+            event = Octo::AppLogout.new(enterprise: enterprise,
+                                        created_at: Time.now,
+                                        userid: user.id).save!
+            updateUserDeviceDetails(user, msg)
+            call_hooks(eventName, hook_opts)
+          when 'page.view'
+            page, categories, tags = checkPage(enterprise, msg)
+            Octo::PageView.new(enterprise: enterprise,
+                               created_at: Time.now,
+                               userid: user.id,
+                               routeurl: page.routeurl
+            ).save!
+            hook_opts.merge!({type: page.routeurl})
+            updateUserDeviceDetails(user, msg)
+            call_hooks(eventName, hook_opts)
+          when 'productpage.view'
+            product, categories, tags = checkProduct(enterprise, msg)
+            Octo::ProductPageView.new(
+                                     enterprise: enterprise,
+                                     created_at: Time.now,
+                                     userid: user.id,
+                                     product_id: product.id
+            ).save!
+            updateUserDeviceDetails(user, msg)
+            hook_opts.merge!({ product: product,
+                               categories: categories,
+                               tags: tags,
+                               type: product.routeurl
+                             })
+            call_hooks(eventName, hook_opts)
+          when 'update.profile'
+            checkUserProfileDetails(enterprise, user, msg)
+            updateUserDeviceDetails(user, msg)
+            call_hooks(eventName, hook_opts)
+          when 'update.push_token'
+            checkPushToken(enterprise, user, msg)
+            checkPushKey(enterprise, msg)
+          when 'funnel_update'
+            checkRedisSession(enterprise,msg)
+          end
+        end
       end
 
       private
 
+      # Make an entry of Event type
+      # @param [Octo::Enterprise] enterprise 
+      # @param [String] event_name Name of Event
       def register_api_event(enterprise, event_name)
         Octo::ApiEvent.findOrCreate({ enterprise_id: enterprise.id,
                                       eventname: event_name})
       end
 
+      # Set Octo callbacks
+      # @param [String] event Event name
+      # @param [Hash] *args Points to the messsage hash
       def call_hooks(event, *args)
         hook = [:after, event.gsub('.', '_')].join('_').to_sym
         Octo::Callbacks.run_hook(hook, *args)
@@ -159,6 +168,11 @@ module Octo
         Octo::FunnelTracker.findOrCreateOrAdjust(args_from,counters)
       end
 
+      # Creeate or Update Profile details of a user
+      # @param [Octo::Enterprise] enterprise Object of enterprise model
+      # @param [Octo::User] user Object of user model
+      # @param [Hash] msg Hash of message
+      # @return [Octo::UserProfileDetails] User Profile
       def checkUserProfileDetails(enterprise, user, msg)
         args = {
           user_id: user.id,
