@@ -18,6 +18,7 @@ require 'octocore/segment'
 # Mailer and scheduler should always be required in the following order
 require 'octocore/mailer'
 require 'octocore/scheduler'
+require 'octocore/message_parser'
 
 require 'octocore/schedeuleable'
 require 'octocore/helpers'
