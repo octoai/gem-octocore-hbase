@@ -3,7 +3,7 @@ require 'resque'
 require 'resque-scheduler'
 
 module Octo
-  
+
   # Octo Email Sender
   module Email
 
@@ -16,7 +16,7 @@ module Octo
         raise ArgumentError, 'Email Address or Subject is missing'
       else
         message = {
-          from_name: Octo.get_config(:email_sender).fetch(:name),  
+          from_name: Octo.get_config(:email_sender).fetch(:name),
           from_email: Octo.get_config(:email_sender).fetch(:email),
 
           subject: subject,
@@ -30,7 +30,8 @@ module Octo
           }]
         }
         # Pass the message to resque only when mandrill key is present
-        if Octo.get_config(:mandrill_api_key) != ''
+        _mandrill_config = Octo.get_config(:mandrill_api_key) || ENV['MANDRILL_API_KEY']
+        if _mandrill_config and !_mandrill_config.empty?
           enqueue_msg(message)
         end
       end
@@ -46,16 +47,17 @@ module Octo
 
   # Class to perform Resque operations for sending email
   class EmailSender
-    
+
     @queue = :email_sender
-    
+
     # Resque Perform method
     # @param [Hash] message The details of email
     def self.perform(message)
-      m = Mandrill::API.new Octo.get_config(:mandrill_api_key)
+      _mandrill_config = Octo.get_config(:mandrill_api_key) || ENV['MANDRILL_API_KEY']
+      m = Mandrill::API.new _mandrill_config
       m.messages.send message
     end
 
   end
-
 end
+
