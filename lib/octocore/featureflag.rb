@@ -60,6 +60,14 @@ module Octo
       def is_flagged?(feature)
         flags.include?feature
       end
+
+      # Returns if the flag is not set
+      # @param [Module] feature The module to be tested
+      # @return [Boolean] Boolean value specifying the status
+      #
+      def is_not_flagged?(feature)
+        !is_flagged?feature
+      end
     end
 
   end

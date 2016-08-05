@@ -70,10 +70,12 @@ module Octo
       # product_page_view to redis.
       # It self expires in n seconds from last hit
       def add_session(opts)
-        if opts.has_key?(:type)
-          createRedisShadowKey(opts[:enterprise].id.to_s + '_' + opts[:user].id.to_s,
-                               opts[:type].to_s,
-                               Octo.get_config(:session_length))
+        if Octo.is_not_flagged?(Octo::Funnel)
+          if opts.has_key?(:type)
+            createRedisShadowKey(opts[:enterprise].id.to_s + '_' + opts[:user].id.to_s,
+                                 opts[:type].to_s,
+                                 Octo.get_config(:session_length))
+          end
         end
       end
 
