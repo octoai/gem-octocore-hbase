@@ -30,7 +30,7 @@ module Octo
           }]
         }
         # Pass the message to resque only when mandrill key is present
-        _mandrill_config = Octo.get_config(:mandrill_api_key) || ENV['MANDRILL_API_KEY']
+        _mandrill_config = ENV['MANDRILL_API_KEY'] || Octo.get_config(:mandrill_api_key)
         if _mandrill_config and !_mandrill_config.empty?
           enqueue_msg(message)
         end
@@ -53,7 +53,7 @@ module Octo
     # Resque Perform method
     # @param [Hash] message The details of email
     def self.perform(message)
-      _mandrill_config = Octo.get_config(:mandrill_api_key) || ENV['MANDRILL_API_KEY']
+      _mandrill_config = ENV['MANDRILL_API_KEY'] || Octo.get_config(:mandrill_api_key)
       m = Mandrill::API.new _mandrill_config
       m.messages.send message
     end
