@@ -118,6 +118,3 @@ DEPENDENCIES
   parallel_tests (~> 2.5.0, >= 2.5.0)
   rake
   rspec
-
-BUNDLED WITH
-   1.11.2
