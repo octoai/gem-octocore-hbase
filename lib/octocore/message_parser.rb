@@ -93,12 +93,6 @@ module Octo
         parse(@message)
       end
 
-      # To get message in Json form
-      # @return [Json] Message
-      def to_json
-        JSON.parse(@message)
-      end
-
       # To get enterprise id
       # @return [String] Enterprise Id
       def eid

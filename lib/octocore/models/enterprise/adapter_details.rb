@@ -1,6 +1,8 @@
 require 'cequel'
+require 'octocore/record'
 
 module Octo
+	# Store adapter details of Enterprise
   class AdapterDetails
     include Cequel::Record
     include Octo::Record
@@ -10,7 +12,7 @@ module Octo
     key :adapter_id, :int
     key :enable, :boolean
     
-    column :settings, :map
+    column :settings, :text
 
   end
 end
