@@ -72,6 +72,8 @@ module Octo
 
   end
 
-  include FeatureFlag
+  #include FeatureFlag
 end
+
+Octo.send(:include, Octo::FeatureFlag)
 

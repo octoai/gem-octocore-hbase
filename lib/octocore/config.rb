@@ -35,3 +35,5 @@ end
 module Octo
   include Octo::Config
 end
+
+require 'octocore/featureflag'

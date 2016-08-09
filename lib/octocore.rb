@@ -4,7 +4,7 @@ require 'logger'
 
 require 'octocore/version'
 require 'octocore/config'
-require 'octocore/featureflag'
+
 
 require 'octocore/models'
 require 'octocore/counter'
