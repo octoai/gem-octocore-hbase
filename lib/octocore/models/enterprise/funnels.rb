@@ -6,6 +6,9 @@ module Octo
 
   # Stores the funnel for the enterprise
   class Funnel
+
+    Octo.featureflag self, true
+
     include Cequel::Record
     include Octo::Record
 

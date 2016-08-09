@@ -7,6 +7,8 @@ module Octo
   # The Segmentation module
   module Segmentation
 
+    Octo.featureflag self, true
+
     extend ActiveSupport::Concern
 
     module Helpers

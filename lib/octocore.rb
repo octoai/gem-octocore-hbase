@@ -4,6 +4,8 @@ require 'logger'
 
 require 'octocore/version'
 require 'octocore/config'
+
+
 require 'octocore/models'
 require 'octocore/counter'
 require 'octocore/email'
@@ -18,6 +20,7 @@ require 'octocore/segment'
 # Mailer and scheduler should always be required in the following order
 require 'octocore/mailer'
 require 'octocore/scheduler'
+
 require 'octocore/message_parser'
 
 require 'octocore/schedeuleable'

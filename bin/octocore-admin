@@ -5,10 +5,7 @@
 
 # ./octocore-admin --tasks
 
-require 'rspec/core/rake_task'
-
 require 'open3'
-
 
 module Octo
   module CliAdmin
@@ -52,10 +49,6 @@ module Octo
   end
 end
 
-
-if __FILE__ == $0
-  main
-end
 
 Octo::CliAdmin.main
 
