@@ -217,6 +217,7 @@ end
 
 
 require 'octocore/models/enterprise'
+require 'octocore/models/enterprise/adapter_details'
 require 'octocore/models/enterprise/api_event'
 require 'octocore/models/enterprise/api_hit'
 require 'octocore/models/enterprise/api_track'
