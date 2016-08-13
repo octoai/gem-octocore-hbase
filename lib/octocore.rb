@@ -135,6 +135,7 @@ module Octo
 
     self.logger.info('Setting callbacks.')
 
+    Octo::Callbacks.run_hook(:after_connect)
   end
 
   # Creates a logger for Octo
