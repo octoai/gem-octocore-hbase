@@ -8,14 +8,17 @@ module Octo
   module Helpers
     module KongHelper
 
+      # The default URL for kong to connect to
+      KONG_URL = 'http://127.0.0.1:8001'
+
       # Fetch Kong URL
       # @return [String] Kong URL
       def kong_url
         kong_config = Octo.get_config :kong
-        if kong_config.has_key?(:url)
-          kong_config[:url]
-        else
-          'http://127.0.0.1:8001'
+        if kong_config.class == String
+          kong_config
+        elsif kong_config.class == Hash
+          kong_config.fetch :url, KONG_URL
         end
       end
 
@@ -26,13 +29,12 @@ module Octo
       # @return [Hash] Response
       def process_kong_request (url, method, payload)
         begin
-
           url = kong_url + url
           header = {
             'Accept' => 'application/json, text/plain, */*',
             'Content-Type' => 'application/json'
           }
-          uri = URI.parse(url)
+          uri = URI.parse(URI.encode(url.strip))
           http = Net::HTTP.new(uri.host,uri.port)
 
           case method
@@ -50,10 +52,16 @@ module Octo
             # Default Case
           end
 
-          req.body = "#{ payload.to_json }"
-          res = http.request(req)
-          JSON.parse(res.body) # Returned Data
+          puts "HTTP #{ method } to #{ uri.host}:#{ uri.port }. Body: #{ payload.to_json }"
+          body = "#{ payload.to_json }"
+          res = http.request(req, body)
+          if res.body
+            JSON.parse(res.body) # Returned Data
+          else
+            {}
+          end
         rescue Exception => e
+          puts "Exception: " + e.message.to_s + "\n" + e.backtrace_locations.join("\n")  + "}"
           { message: e.to_s }.to_json
         end
       end
