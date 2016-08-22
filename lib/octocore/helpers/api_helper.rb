@@ -1,4 +1,5 @@
 require 'securerandom'
+require 'octocore'
 require 'octocore/stats'
 
 module Octo
@@ -12,10 +13,17 @@ module Octo
       # Get enterprise details from the HTTP headers that Kong sets
       # @return [Hash] The hash of enterprise details
       def enterprise_details
-        KONG_HEADERS.inject({}) do |r, header|
-          key = header.gsub('HTTP_X_CONSUMER_', '').downcase
-          r[key] = request.env.fetch(header, nil)
-          r
+        kong_config = Octo.get_config :kong
+        if kong_config[:enabled]
+          KONG_HEADERS.inject({}) do |r, header|
+            key = header.gsub('HTTP_X_CONSUMER_', '').downcase
+            r[key] = request.env.fetch(header, nil)
+            r
+          end
+        else
+          apikey = request.env.fetch('HTTP_APIKEY')
+          api_obj = Octo::ApiKey.where(enterprise_key: apikey).first
+          {custom_id: api_obj.enterprise_id}
         end
       end
 
@@ -44,7 +52,10 @@ module Octo
           uuid: uuid
         }
         postparams.merge!(opts)
-        settings.kafka_bridge.push(postparams)
+        kafka_config = Octo.get_config :kafka
+        if kafka_config[:enabled]
+          settings.kafka_bridge.push(postparams)
+        end
         { eventId: opts[:uuid] }.to_json
       end
 
