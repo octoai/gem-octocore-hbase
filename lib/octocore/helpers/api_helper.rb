@@ -22,8 +22,7 @@ module Octo
           end
         else
           apikey = request.env.fetch('HTTP_APIKEY')
-          api_obj = Octo::ApiKey.where(enterprise_key: apikey).first
-          {custom_id: api_obj.enterprise_id}
+          {custom_id: settings.redis.get(apikey)}
         end
       end
 
@@ -55,6 +54,8 @@ module Octo
         kafka_config = Octo.get_config :kafka
         if kafka_config[:enabled]
           settings.kafka_bridge.push(postparams)
+        else
+          settings.queue.push(JSON.dump(postparams))
         end
         { eventId: opts[:uuid] }.to_json
       end

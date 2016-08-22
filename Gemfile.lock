@@ -12,6 +12,7 @@ PATH
       mandrill-api (~> 1.0, >= 1.0.53)
       rake (~> 11.1.0, >= 11.1.0)
       redis (~> 3.2.2, >= 3.2.0)
+      redis-queue (~> 0.0.4, >= 0.0.4)
       resque (~> 1.26.0, >= 1.26.0)
       resque-scheduler (~> 4.1.0, >= 4.1.0)
       ruby-kafka (~> 0.3.2, >= 0.3.2)
@@ -20,10 +21,10 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (4.2.7)
-      activesupport (= 4.2.7)
+    activemodel (4.2.7.1)
+      activesupport (= 4.2.7.1)
       builder (~> 3.1)
-    activesupport (4.2.7)
+    activesupport (4.2.7.1)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -70,6 +71,9 @@ GEM
     rake (11.1.2)
     redis (3.2.2)
     redis-namespace (1.5.2)
+      redis (~> 3.0, >= 3.0.4)
+    redis-queue (0.0.4)
+      hiredis (~> 0.5, >= 0.5.2)
       redis (~> 3.0, >= 3.0.4)
     resque (1.26.0)
       mono_logger (~> 1.0)
