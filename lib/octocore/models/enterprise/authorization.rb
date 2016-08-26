@@ -42,19 +42,25 @@ module Octo
 
     # Perform Kong Operations after creating client
     def kong_requests
-      url = '/consumers/'
-      payload = {
-        username: self.username,
-        custom_id: self.enterprise_id
-      }
+      kong_config = Octo.get_config :kong
+      if kong_config[:enabled]
+        url = '/consumers/'
+        payload = {
+          username: self.username,
+          custom_id: self.enterprise_id
+        }
 
-      process_kong_request(url, :PUT, payload)
-      create_keyauth( self.username, self.apikey)
+        process_kong_request(url, :PUT, payload)
+        create_keyauth( self.username, self.apikey)
+      end
     end
 
     # Delete Kong Records
     def kong_delete
-      delete_consumer(self.username)
+      kong_config = Octo.get_config :kong
+      if kong_config[:enabled]
+        delete_consumer(self.username)
+      end
     end
 
   end

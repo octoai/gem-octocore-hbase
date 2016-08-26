@@ -58,8 +58,11 @@ end
 
 # Delete Kong Consumers and Apis
 def kong_delete
-  Octo::Helpers::KongBridge.delete_all
-  puts 'Kong Cleaned'
+  kong_config = Octo.get_config :kong
+  if kong_config[:enabled]
+    Octo::Helpers::KongBridge.delete_all
+    puts 'Kong Cleaned'
+  end
 end
 
 # Clear Cache
