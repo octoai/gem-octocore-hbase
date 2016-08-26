@@ -12,8 +12,6 @@ require 'octocore'
 module Octo
   class FakeStream
 
-    BASE_URL = 'http://127.0.0.1:9001'
-
     MAX_USERS = 100
 
     MAX_PAGES = 30
@@ -30,6 +28,10 @@ module Octo
     # Initialize with the URL
     def initialize
       @_apikeys = {}
+    end
+
+    def base_url
+      Octo.get_config(:base_url)
     end
 
     def stream
@@ -176,7 +178,7 @@ module Octo
     end
 
     # Creates the URI
-    def uri(url = BASE_URL)
+    def uri(url = base_url)
       URI(url)
     end
 
@@ -197,7 +199,7 @@ module Octo
           'apikey' => apikey
       }
 
-      _uri = uri(BASE_URL + url)
+      _uri = uri(base_url + url)
       req = Net::HTTP::Post.new(_uri, headers)
       req.content_type = 'application/json'
       req.body = payload.to_json
