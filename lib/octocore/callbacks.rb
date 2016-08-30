@@ -11,34 +11,37 @@ module Octo
     included do
 
       define_hooks :after_app_init, :after_app_login, :after_app_logout,
-                   :after_page_view, :after_productpage_view, :after_connect
+                   :after_page_view, :after_productpage_view, :after_connect,
+                   :after_update_profile, :after_update_push_token, :after_funnel_update
 
-      # Define the after_app_init hook
-      after_app_init do |args|
-        update_counters args
-      end
+      # # Define the after_app_init hook
+      # after_app_init do |args|
+      #   update_counters args
+      # end
 
-      # Define the after_app_login hook
-      after_app_login do |args|
-        update_counters args
-      end
+      # # Define the after_app_login hook
+      # after_app_login do |args|
+      #   update_counters args
+      # end
 
-      # Define the after_app_logout hook
-      after_app_logout do |args|
-        update_counters args
-      end
+      # # Define the after_app_logout hook
+      # after_app_logout do |args|
+      #   update_counters args
+      # end
 
-      # Define the after_page_view hook
-      after_page_view do |args|
-        add_session args
-        update_counters args
-      end
+      # # Define the after_page_view hook
+      # after_page_view do |args|
+      #   add_session args
+      #   update_counters args
+      # end
 
-      # Define the after_productpage_view hook
-      after_productpage_view do |args|
-        add_session args
-        update_counters args
-      end
+      # # Define the after_productpage_view hook
+      # after_productpage_view do |args|
+      #   add_session args
+      #   update_counters args
+      # end
+
+
     end
 
     # Add all the post-hook-call methods here. Also, extend the module
@@ -103,5 +106,12 @@ module Octo
   class Callbacks
     include Hooks
     include Octo::OctoHooks
+
+    class << self
+      def callback_update(msg)
+        update_counters msg
+      end
+    end
+
   end
 end

@@ -114,12 +114,13 @@ module Octo
     self.logger.info('Octo booting up.')
 
     # Establish Cequel Connection
-    connection = Cequel.connect(Octo.get_config(:cassandra))
+    cassandra_config = Octo.get_config(:cassandra)
+    connection = Cequel.connect(cassandra_config)
     Cequel::Record.connection = connection
 
     # Establish connection to cache server
     default_cache = {
-        host: '127.0.0.1', port: 6379
+      host: '127.0.0.1', port: 6379
     }
     cache_config = Octo.get_config(:redis, default_cache)
     Cequel::Record.update_cache_config(*cache_config.values_at(:host, :port))
