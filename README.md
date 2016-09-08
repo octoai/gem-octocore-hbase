@@ -1,0 +1,82 @@
+# octo-core
+
+This is the Octomatic Enterprise Core gem. It provides most of the ORM stuff. Class and modules for different tables.
+
+## Pre-Install
+
+The below steps are for Mac. For your operating system, there must exist a way which must be found and must be updated here.
+
+- Install hbase `brew install hbase`
+- Install thrift `brew install thrift`
+- Hadoop `brew install hadoop`
+
+## Installting
+
+```bash
+gem install octocore
+```
+
+In case you are using bundler, you need to add something like this to your Gemfile:
+
+```ruby
+gem 'octocore', :git => 'git@github.com:octoai/gem-octocore.git'
+```
+
+#### Troubleshooting
+
+- Mac
+  - [http://stackoverflow.com/questions/36378190/cant-install-thrift-gem-on-os-x-el-capitan](http://stackoverflow.com/questions/36378190/cant-install-thrift-gem-on-os-x-el-capitan)
+  - [http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install](http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install)
+
+
+## DB Migrations
+
+### OctoAdmin CLI
+
+This gem comes with a handy utility called `octocore-admin`. You can use this utility for db migrations, reset and init.
+
+```bash
+$ octocore-admin action path/to/config/dir
+```
+
+Where
+
+- `action`: The action to be performed. One of `init`, `migrate` or `reset`
+- `/path/to/config/dir`: The path where your config dir is placed
+
+
+# Development
+
+## Clone the repo
+
+`$ git clone git@github.com:octoai/gem-octocore.git`
+
+## Building
+
+```bash
+$ ./bin/clean_setup.sh
+```
+
+## Specs
+
+```bash
+$ rake spec
+```
+
+# Verifying connectivity
+
+You can use the following set of commands in `irb` to verify all things working with this gem. Execute it from irb in PROJ_DIR.
+
+```ruby
+require 'octocore'
+config_dir = '/path/to/config/dir'
+Octo.connect_with_config_file config_dir
+```
+
+# Creating fake stream
+
+It ships with a utility called `fakestream`. It will automatically stream random data. To use just open your console and type
+
+```bash
+$ fakestream /path/to/config/dir
+```

@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+#
+# A simple utility to provide easy migrations, reset
+# and all the rake tasks that you may need to do
+
+# ./octocore-admin --tasks
+
+require 'open3'
+
+module Octo
+  module CliAdmin
+
+    VALID_ACTIONS = %w(init migrate reset)
+
+    module ClassMethods
+      def perform(action, config_dir)
+        if VALID_ACTIONS.include?(action)
+          cmd = ['rake', '-f', spec.gem_dir + '/Rakefile',
+                '--verbose', "octo:#{ action }",
+                "CONFIG_DIR=#{ config_dir }"]
+          #STDOUT.puts "** Executing: #{ cmd }"
+          Open3.popen3(*cmd) do |stdout, stderr, status, thread|
+            stderr.sync = true
+            while line=stderr.gets do
+              puts(line)
+            end
+          end
+        else
+          STDOUT.puts "Invalid action: #{ action }"
+        end
+      end
+
+      def spec
+        @spec ||= Gem::Specification.find_by_name 'octocore'
+      end
+    end
+
+    class Cli
+      extend ClassMethods
+    end
+
+    def self.main
+      STDOUT.sync = true
+      action = ARGV[0]
+      config_dir = ARGV[1]
+      Octo::CliAdmin::Cli.perform(action, config_dir)
+    end
+
+  end
+end
+
+
+Octo::CliAdmin.main
+

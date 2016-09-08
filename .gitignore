@@ -1,0 +1,7 @@
+.DS_Store
+*.gem
+*.rdb
+.idea/
+build/
+*.iml
+octo-core/lib/octocore/config/config
