@@ -1,21 +1,20 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 require 'set'
 
 module Octo
 
   # The SegmentData class. This class holds data for the segments
-  class SegmentData
+  class SegmentData < MassiveRecord::ORM::Table
 
-    include Cequel::Record
     include Octo::Record
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :segment_slug, :text  # Using key as segment name's slug
+    field :segment_slug  # Using field as segment name's slug
 
-    key :ts, :timestamp    # The timestamp at which data is collected
-    list :value, :float       # List of values containing data collected
+    field :ts, :timestamp    # The timestamp at which data is collected
+    field :value, :array       # List of values containing data collected
 
   end
 end

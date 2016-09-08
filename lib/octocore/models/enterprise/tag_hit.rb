@@ -1,4 +1,4 @@
-require 'cequel'
+require 'massive_record'
 
 require 'octocore/counter'
 require 'octocore/trendable'
@@ -6,8 +6,7 @@ require 'octocore/schedeuleable'
 
 module Octo
 
-  class TagHit
-    include Cequel::Record
+  class TagHit < MassiveRecord::ORM::Table
     extend Octo::Counter
     extend Octo::Trendable
     extend Octo::Scheduleable

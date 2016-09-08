@@ -1,11 +1,11 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class ApiKey
-    include Cequel::Record
+  class ApiKey < MassiveRecord::ORM::Table
 
-    key :enterprise_key, :text
-    key :enterprise_id, :uuid
+
+    field :enterprise_key
+    field :enterprise_id
 
   end
 end

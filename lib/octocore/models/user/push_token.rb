@@ -1,13 +1,12 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class PushToken
-    include Cequel::Record
+  class PushToken < MassiveRecord::ORM::Table
 
     belongs_to :user, class_name: 'Octo::User'
 
-    key :push_type, :bigint
-    column :pushtoken, :text
+    field :push_type, :integer
+    field :pushtoken
 
     timestamps
   end

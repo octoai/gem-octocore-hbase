@@ -1,11 +1,10 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/trends'
 
 module Octo
 
   # Class for storing trending product
-  class ProductTrend
-    include Cequel::Record
+  class ProductTrend < MassiveRecord::ORM::Table
     extend Octo::Trends
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'

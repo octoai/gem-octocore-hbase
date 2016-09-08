@@ -1,14 +1,12 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class PageView
-    include Cequel::Record
-
+  class PageView < MassiveRecord::ORM::Table
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :userid,     :bigint
-    key :created_at, :timestamp, order: :desc
+    field :userid,     :integer
+    field :created_at, :time, order: :desc
 
-    column :routeurl, :text
+    field :routeurl
   end
 end

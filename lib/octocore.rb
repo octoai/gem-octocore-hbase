@@ -1,4 +1,3 @@
-require 'cequel'
 require 'yaml'
 require 'logger'
 
@@ -113,17 +112,18 @@ module Octo
 
     self.logger.info('Octo booting up.')
 
-    # Establish Cequel Connection
-    cassandra_config = Octo.get_config(:cassandra)
-    connection = Cequel.connect(cassandra_config)
-    Cequel::Record.connection = connection
+    # Specify hbase connection params
+    MassiveRecord::ORM::Base.connection_configuration = Octo.get_config(:hbase)
+
+    # Setup logger
+    MassiveRecord::ORM::Base.logger = self.logger
 
     # Establish connection to cache server
     default_cache = {
       host: '127.0.0.1', port: 6379
     }
     cache_config = Octo.get_config(:redis, default_cache)
-    Cequel::Record.update_cache_config(*cache_config.values_at(:host, :port))
+    MassiveRecord::ORM::Table.update_cache_config(*cache_config.values_at(:host, :port))
 
     # Establish connection to statsd server if required
     if configuration.has_key?(:statsd)

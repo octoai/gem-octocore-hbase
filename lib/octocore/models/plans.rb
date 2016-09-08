@@ -1,17 +1,15 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 
 module Octo
 
-  class Plan
-
-    include Cequel::Record
+  class Plan < MassiveRecord::ORM::Table
     include Octo::Record
 
-    key :id, :int
-    key :active, :boolean
+    field :id, :integer
+    field :active, :boolean
 
-    column :name, :text
+    field :name
   end
 end
 

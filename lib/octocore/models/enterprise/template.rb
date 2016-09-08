@@ -1,15 +1,13 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class Template
-    include Cequel::Record
-
+  class Template < MassiveRecord::ORM::Table
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :category_type, :text
+    field :category_type
 
-    column :template_text, :text
-    column :active, :boolean
+    field :template_text
+    field :active, :boolean
 
     timestamps
 

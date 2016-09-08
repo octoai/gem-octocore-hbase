@@ -1,9 +1,10 @@
-require 'cequel'
+require 'massive_record'
 require 'redis'
 
+module MassiveRecord
+  module ORM
 
-module Cequel
-  module Record
+  class Table
 
     include ActiveModel::Serializers::JSON
 
@@ -113,13 +114,13 @@ module Cequel
 
           if dirty
             res.save!
-            Cequel::Record.redis.setex(cache_key, get_ttl,
+            MassiveRecord::ORM::Table.redis.setex(cache_key, get_ttl,
                                        Octo::Utils.serialize(res))
           end
         else
           _args = args.merge(options)
           res = self.new(_args).save!
-          Cequel::Record.redis.setex(cache_key, get_ttl,
+          MassiveRecord::ORM::Table.redis.setex(cache_key, get_ttl,
                                      Octo::Utils.serialize(res))
         end
         res
@@ -140,7 +141,7 @@ module Cequel
 
           # Update cache
           cache_key = gen_cache_key(args)
-          Cequel::Record.redis.setex(cache_key, get_ttl, Octo::Utils.serialize(res))
+          MassiveRecord::ORM::Table.redis.setex(cache_key, get_ttl, Octo::Utils.serialize(res))
         end
         res
       end
@@ -163,7 +164,7 @@ module Cequel
         cache_key = gen_cache_key(args)
 
         begin
-          cached_val = Cequel::Record.redis.get(cache_key)
+          cached_val = MassiveRecord::ORM::Table.redis.get(cache_key)
         rescue Exception
           cached_val = nil
         end
@@ -175,10 +176,10 @@ module Cequel
             return nil
           elsif result_count == 1
             cached_val = Octo::Utils.serialize(res.first)
-            Cequel::Record.redis.setex(cache_key, get_ttl, cached_val)
+            MassiveRecord::ORM::Table.redis.setex(cache_key, get_ttl, cached_val)
           elsif result_count > 1
             cached_val = Octo::Utils.serialize(res)
-            Cequel::Record.redis.setex(cache_key, get_ttl, cached_val)
+            MassiveRecord::ORM::Table.redis.setex(cache_key, get_ttl, cached_val)
           end
         end
         begin
@@ -212,6 +213,7 @@ module Cequel
       end
 
     end
+  end
   end
 end
 

@@ -1,11 +1,10 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 
 module Octo
 
-  class Ctr
+  class Ctr < MassiveRecord::ORM::Table
 
-    include Cequel::Record
     include Octo::Record
 
     # Type of Ctr. Reserved for future use
@@ -13,9 +12,9 @@ module Octo
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :ts, :timestamp
+    field :ts, :time
 
-    list :value, :int
+    field :value, :array
 
     class << self
 

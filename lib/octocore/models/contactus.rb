@@ -1,17 +1,16 @@
-require 'cequel'
+require 'massive_record'
 
 # Model for contact us page on the microsite
 module Octo
-  class ContactUs
-    include Cequel::Record
+  class ContactUs < MassiveRecord::ORM::Table
 
-    key :email, :text
-    key :created_at, :timestamp
+    field :email
+    field :created_at, :time
 
-    column :typeofrequest, :text
-    column :firstname, :text
-    column :lastname, :text
-    column :message, :text
+    field :typeofrequest
+    field :firstname
+    field :lastname
+    field :message
 
     after_create :send_email
 
@@ -40,3 +39,4 @@ module Octo
 
   end
 end
+

@@ -1,11 +1,10 @@
-require 'cequel'
+require 'massive_record'
 
 require 'octocore/baseline'
 require 'octocore/schedeuleable'
 
 module Octo
-  class TagBaseline
-    include Cequel::Record
+  class TagBaseline < MassiveRecord::ORM::Table
     extend Octo::Baseline
     extend Octo::Scheduleable
 

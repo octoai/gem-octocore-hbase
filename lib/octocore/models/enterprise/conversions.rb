@@ -1,12 +1,11 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 
 module Octo
 
   # The conversions store
-  class Conversions
+  class Conversions < MassiveRecord::ORM::Table
 
-    include Cequel::Record
     include Octo::Record
 
     # Types of conversions
@@ -16,10 +15,10 @@ module Octo
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :type, :int
-    key :ts, :timestamp
+    field :type, :integer
+    field :ts, :time
 
-    column :value, :float
+    field :value, :float
 
     class << self
 

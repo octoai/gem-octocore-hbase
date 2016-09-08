@@ -1,29 +1,28 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 require 'set'
 
 module Octo
 
   # The segment class. Responsible for segments
-  class Segment
-    include Cequel::Record
+  class Segment < MassiveRecord::ORM::Table
     include Octo::Record
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :name_slug, :text       # Name slug as key
-    key :active, :boolean       # Active or Not
+    field :name_slug       # Name slug as field
+    field :active, :boolean       # Active or Not
 
-    column :intelligence, :boolean # If it is Octo's intelligent segment or manual
+    field :intelligence, :boolean # If it is Octo's intelligent segment or manual
 
-    column :name, :text         # Name of the segment
-    column :type, :int          # Type of segment
-    column :event_type, :text   # Event Type used for events segmentation
+    field :name         # Name of the segment
+    field :type, :integer          # Type of segment
+    field :event_type   # Event Type used for events segmentation
 
-    list :dimensions, :int      # list storing dimensions used
-    list :operators, :int       # list storing operators on dimensions
-    list :dim_operators, :int   # list storing operators between dimensions
-    list :values, :text         # list of values for operations on dimensions
+    field :dimensions, :array      # list storing dimensions used
+    field :operators, :array       # list storing operators on dimensions
+    field :dim_operators, :array   # list storing operators between dimensions
+    field :values, :array         # list of values for operations on dimensions
 
     timestamps                  # The usual housekeeping thing
 

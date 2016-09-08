@@ -15,11 +15,11 @@ module Octo
 
     # Defines the column needed for a baseline
     def baselineable
-      key :type, :int
-      key :ts, :timestamp
-      key :uid, :text
+      field :type, :integer
+      field :ts, :time
+      field :uid
 
-      column :val, :float
+      column :val, :integer
 
       # Generate the aggregator methods
       generate_aggregators { |ts, method|

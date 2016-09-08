@@ -1,24 +1,23 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 require 'set'
 
 module Octo
 
   # Stores the funnel for the enterprise
-  class Funnel
+  class Funnel < MassiveRecord::ORM::Table
 
     Octo.featureflag self, true
 
-    include Cequel::Record
     include Octo::Record
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :name_slug, :text
-    list :funnel, :text
+    field :name_slug
+    field :funnel, :array
 
-    column :name, :text
-    column :active, :boolean
+    field :name
+    field :active, :boolean
 
     timestamps
 

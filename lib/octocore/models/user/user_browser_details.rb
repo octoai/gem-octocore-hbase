@@ -1,15 +1,14 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class UserBrowserDetails
-    include Cequel::Record
+  class UserBrowserDetails < MassiveRecord::ORM::Table
 
     belongs_to :user, class_name: 'Octo::User'
 
-    column :cookieid, :text
-    column :name, :text
-    column :platform, :text
-    column :manufacturer, :text
+    field :cookieid
+    field :name
+    field :platform
+    field :manufacturer
 
     timestamps
   end

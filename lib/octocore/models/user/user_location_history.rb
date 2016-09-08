@@ -1,15 +1,14 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class UserLocationHistory
-    include Cequel::Record
+  class UserLocationHistory < MassiveRecord::ORM::Table
 
     belongs_to :user, class_name: 'Octo::User'
 
-    key :created_at, :timestamp
+    field :created_at, :time
 
-    column :latitude, :float
-    column :longitude, :float
+    field :latitude, :integer
+    field :longitude, :integer
   end
 end
 

@@ -1,10 +1,8 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
 
-  class UserPersona
-
-    include Cequel::Record
+  class UserPersona < MassiveRecord::ORM::Table
 
     HIGH_ENGAGED = 0
     MEDIUM_ENGAGED = 1
@@ -12,12 +10,12 @@ module Octo
     DEAD = 3
 
     belongs_to :user, class_name: 'Octo::User'
-    key :ts, :timestamp
+    field :ts, :time
 
-    map :categories, :text, :float
-    map :tags, :text, :float
-    map :trending, :text, :float
-    column :engagement, :float
+    field :categories, :hash
+    field :tags, :hash
+    field :trending, :hash
+    field :engagement, :integer
 
     def engaged_text
       _engaged_text self.engagement

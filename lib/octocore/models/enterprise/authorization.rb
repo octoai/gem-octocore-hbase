@@ -1,33 +1,32 @@
-require 'cequel'
+require 'massive_record'
 require 'securerandom'
 require 'octocore/helpers/kong_helper'
 
 module Octo
-  class Authorization
-    include Cequel::Record
+  class Authorization < MassiveRecord::ORM::Table
     include Octo::Helpers::KongHelper
 
-    key :username, :text
+    field :username
 
-    column :enterprise_id, :text
-    column :email, :text
-    column :apikey, :text
-    column :session_token, :text
-    column :custom_id, :text
-    column :password, :text
-    column :admin, :boolean
+    field :enterprise_id
+    field :email
+    field :apifield
+    field :session_token
+    field :custom_id
+    field :password
+    field :admin, :boolean
 
-    before_create :check_api_key, :generate_password
+    before_create :check_api_field, :generate_password
     after_create :kong_requests
 
     after_destroy :kong_delete
 
     timestamps
 
-    # Check or Generate client apikey
-    def check_api_key
-      if(self.apikey.nil?)
-        self.apikey = SecureRandom.hex
+    # Check or Generate client apifield
+    def check_api_field
+      if(self.apifield.nil?)
+        self.apifield = SecureRandom.hex
       end
     end
 
@@ -51,7 +50,7 @@ module Octo
         }
 
         process_kong_request(url, :PUT, payload)
-        create_keyauth( self.username, self.apikey)
+        create_fieldauth( self.username, self.apifield)
       end
     end
 

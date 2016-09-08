@@ -1,12 +1,12 @@
-require 'cequel'
+require 'massive_record'
 
 require 'octocore/counter'
 require 'octocore/trendable'
 require 'octocore/schedeuleable'
 
 module Octo
-  class ApiHit
-    include Cequel::Record
+  class ApiHit < MassiveRecord::ORM::Table
+
     extend Octo::Counter
     extend Octo::Scheduleable
 

@@ -1,4 +1,4 @@
-require 'cequel'
+require 'massive_record'
 
 require 'octocore/counter'
 require 'octocore/schedeuleable'
@@ -6,9 +6,8 @@ require 'octocore/schedeuleable'
 module Octo
 
   # Counters for notifications sent
-  class NotificationHit
+  class NotificationHit < MassiveRecord::ORM::Table
 
-    include Cequel::Record
     extend Octo::Counter
     extend Octo::Scheduleable
 

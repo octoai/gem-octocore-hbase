@@ -1,20 +1,22 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class Enterprise
-    include Cequel::Record
+  class Enterprise < MassiveRecord::ORM::Table
 
     # Set ttl of 120 minutes for the caches
     TTL = 120
 
-    key :id, :uuid, auto: true
-    column :name, :varchar
+    field :id
+    field :name, :varchar
 
-    has_many :users, class_name: 'Octo::User'
-    has_many :segments, class_name: 'Octo::Segment'
-    has_many :templates, class_name: 'Octo::Template'
-    has_many :funnels, class_name: 'Octo::Funnel'
-    has_many :conversions, class_name: 'Octo::Conversions'
+    references_many :users, records_starts_from: :refs_starts_from,
+      class_name: 'Octo::Users'
+    references_many :segments, records_starts_from: :refs_starts_from,
+      class_name: 'Octo::Segments'
+    references_many :templates, records_starts_from: :refs_starts_from,
+      class_name: 'Octo::Templates'
+    references_many :funnels, records_starts_from: :refs_starts_from,
+      class_name: 'Octo::Funnels'
 
     after_save :_setup
 
@@ -32,6 +34,10 @@ module Octo
     end
 
     private
+
+    def refs_starts_from
+       "#{self.class.to_s}-#{id}-"
+    end
 
     # Setup the notification categories for the enterprise
     def setup_notification_categories

@@ -1,9 +1,8 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 
 module Octo
-  class Rules
-    include Cequel::Record
+  class Rules < MassiveRecord::ORM::Table
     include Octo::Record
 
     # Types of conversions
@@ -14,15 +13,15 @@ module Octo
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :name_slug, :text       # Name slug as rule
-    key :active, :boolean       # Active or Not
+    field :name_slug       # Name slug as rule
+    field :active, :boolean       # Active or Not
 
-    column :name, :text         # Name of the rule
-    column :segment, :text      # slug name of segment
-    column :template_cat, :text
-    column :duration, :int     # Daily, weekly, weekends ,alternate days
-    column :start_time, :timestamp
-    column :end_time, :timestamp
+    field :name         # Name of the rule
+    field :segment      # slug name of segment
+    field :template_cat
+    field :duration, :int     # Daily, weekly, weekends ,alternate days
+    field :start_time, :time
+    field :end_time, :time
 
     timestamps
 

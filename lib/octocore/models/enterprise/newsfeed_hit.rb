@@ -1,12 +1,11 @@
-require 'cequel'
+require 'massive_record'
 
 require 'octocore/counter'
 require 'octocore/schedeuleable'
 
 module Octo
 
-  class NewsfeedHit
-    include Cequel::Record
+  class NewsfeedHit < MassiveRecord::ORM::Table
     extend Octo::Counter
 
     extend Octo::Scheduleable

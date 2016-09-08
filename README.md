@@ -2,6 +2,14 @@
 
 This is the Octomatic Enterprise Core gem. It provides most of the ORM stuff. Class and modules for different tables.
 
+## Pre-Install
+
+The below steps are for Mac. For your operating system, there must exist a way which must be found and must be updated here.
+
+- Install hbase `brew install hbase`
+- Install thrift `brew install thrift`
+- Hadoop `brew install hadoop`
+
 ## Installting
 
 ```bash
@@ -14,6 +22,11 @@ In case you are using bundler, you need to add something like this to your Gemfi
 gem 'octocore', :git => 'git@github.com:octoai/gem-octocore.git'
 ```
 
+#### Troubleshooting
+
+- Mac
+  - [http://stackoverflow.com/questions/36378190/cant-install-thrift-gem-on-os-x-el-capitan](http://stackoverflow.com/questions/36378190/cant-install-thrift-gem-on-os-x-el-capitan)
+  - [http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install](http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install)
 
 
 ## DB Migrations

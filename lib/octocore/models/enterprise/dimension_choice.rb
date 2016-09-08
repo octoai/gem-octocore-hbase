@@ -1,18 +1,17 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 
 module Octo
 
   # Choices for dimensions
-  class DimensionChoice
+  class DimensionChoice < MassiveRecord::ORM::Table
 
-    include Cequel::Record
     include Octo::Record
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :dimension, :int
-    column :choice, :text
+    field :dimension, :int
+    field :choice
 
     timestamps
 

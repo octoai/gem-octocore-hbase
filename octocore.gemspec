@@ -26,7 +26,8 @@ DESC
 
   s.required_ruby_version = '>= 2.0'
 
-  s.add_runtime_dependency 'cequel',  '~> 1.9', '>= 1.9.0'
+  s.add_runtime_dependency 'thrift', '=0.6.0', '= 0.6.0'
+  s.add_runtime_dependency 'massive_record',  '~> 0.2.2', '>= 0.2.2'
   s.add_runtime_dependency 'redis', '~> 3.2.2', '>= 3.2.0'
   s.add_runtime_dependency 'redis-queue', '~> 0.0.4', '>= 0.0.4'
   s.add_runtime_dependency 'hiredis', '~> 0.6.1', '>= 0.6.0'

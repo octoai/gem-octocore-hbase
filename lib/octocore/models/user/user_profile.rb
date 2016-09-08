@@ -1,18 +1,17 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class UserProfileDetails
-    include Cequel::Record
+  class UserProfileDetails < MassiveRecord::ORM::Table
 
     belongs_to :user, class_name: 'Octo::User'
 
-    key :email, :text
-    column :username, :text
-    column :dob, :text
-    column :gender, :text
-    column :alternate_email, :text
-    column :mobile, :text
-    column :extras, :text
+    field :email
+    field :username
+    field :dob
+    field :gender
+    field :alternate_email
+    field :mobile
+    field :extras
 
     timestamps
   end

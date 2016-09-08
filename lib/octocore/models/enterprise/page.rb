@@ -1,15 +1,13 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class Page
-    include Cequel::Record
-
+  class Page < MassiveRecord::ORM::Table
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :routeurl, :text
+    field :routeurl
 
-    set :categories, :text
-    set :tags, :text
+    field :categories, :array
+    field :tags, :array
   end
 end
 

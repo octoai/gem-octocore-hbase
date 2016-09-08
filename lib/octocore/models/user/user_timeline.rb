@@ -1,9 +1,8 @@
-require 'cequel'
+require 'massive_record'
 require 'ostruct'
 
 module Octo
-  class UserTimeline
-    include Cequel::Record
+  class UserTimeline < MassiveRecord::ORM::Table
 
     BROWSE_PRODUCT  = 0
     BROWSE_PAGE     = 1
@@ -24,13 +23,13 @@ module Octo
 
     belongs_to :user, class_name: 'Octo::User'
 
-    key :ts, :timestamp
+    field :ts, :time
 
-    column :type, :int
-    column :title, :text
-    column :location_type, :int
-    column :insight, :text
-    column :details, :text
+    field :type, :integer
+    field :title
+    field :location_type, :integer
+    field :insight
+    field :details
 
     timestamps
 

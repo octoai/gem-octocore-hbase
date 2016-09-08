@@ -1,21 +1,20 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 
 module Octo
-  class Product
-    include Cequel::Record
+  class Product < MassiveRecord::ORM::Table
     include Octo::Record
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :id, :bigint
+    field :id, :integer
 
-    column :price, :float
-    column :name, :text
-    column :routeurl, :text
+    field :price, :integer
+    field :name
+    field :routeurl
 
-    set :categories, :text
-    set :tags, :text
+    field :categories, :array
+    field :tags, :array
 
     timestamps
   end

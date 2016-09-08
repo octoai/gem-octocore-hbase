@@ -1,13 +1,13 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class ApiTrack
-    include Cequel::Record
+  class ApiTrack < MassiveRecord::ORM::Table
 
-    key :customid, :uuid
-    column :created_at, :timestamp
-    column :json_dump, :text
-    column :type, :text, index: true
+
+    field :customid
+    field :created_at, :time
+    field :json_dump
+    field :type, index: true
 
   end
 end

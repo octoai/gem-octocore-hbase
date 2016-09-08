@@ -1,15 +1,14 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class UserPhoneDetails
-    include Cequel::Record
+  class UserPhoneDetails < MassiveRecord::ORM::Table
 
     belongs_to :user, class_name: 'Octo::User'
 
-    key :deviceid, :text
-    column :manufacturer, :text
-    column :model, :text
-    column :os, :text
+    field :deviceid
+    field :manufacturer
+    field :model
+    field :os
 
     timestamps
   end

@@ -1,19 +1,17 @@
-require 'cequel/record'
+require 'massive_record/record'
 
 module Octo
 
-  class EngagementTime
-    include Cequel::Record
-
+  class EngagementTime < MassiveRecord::ORM::Table
     # Types of Engagement
     NEWSFEED = 0
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
-    key :engagement_type, :int
-    key :counter_type, :int
-    key :ts, :timestamp
+    field :engagement_type, :integer
+    field :counter_type, :integer
+    field :ts, :time
 
-    column :time, :int
+    field :time, :integer
 
     timestamps
 

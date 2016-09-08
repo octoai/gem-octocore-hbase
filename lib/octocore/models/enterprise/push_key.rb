@@ -1,13 +1,11 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class PushKey
-    include Cequel::Record
-
+  class Pushfield < MassiveRecord::ORM::Table
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :push_type, :bigint
-    column :key, :text
+    field :push_type, :integer
+    field :field
 
     timestamps
   end

@@ -1,19 +1,18 @@
-require 'cequel/record'
+require 'massive_record'
 
 module Octo
 
-  class PageloadTime
-    include Cequel::Record
+  class PageloadTime < MassiveRecord::ORM::Table
 
     # Types of pageloads
     NEWSFEED = 0
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
-    key :pageload_type, :int
-    key :counter_type, :int
-    key :ts, :timestamp
+    field :pageload_type, :integer
+    field :counter_type, :integer
+    field :ts, :time
 
-    column :time, :int
+    field :time, :integer
 
     timestamps
 

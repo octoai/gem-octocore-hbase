@@ -1,14 +1,13 @@
-require 'cequel'
+require 'massive_record'
 require 'octocore/record'
 
 module Octo
-  class Category
-    include Cequel::Record
+  class Category < MassiveRecord::ORM::Table
     include Octo::Record
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :cat_text, :text
+    field :cat_text
     timestamps
   end
 end

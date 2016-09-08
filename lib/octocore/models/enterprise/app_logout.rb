@@ -1,12 +1,11 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
-  class AppLogout
-    include Cequel::Record
+  class AppLogout < MassiveRecord::ORM::Table
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :created_at, :timestamp
-    key :userid, :bigint
+    field :created_at, :time
+    field :userid, :integer
   end
 end

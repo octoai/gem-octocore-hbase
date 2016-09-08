@@ -1,20 +1,19 @@
-require 'cequel'
+require 'massive_record'
 
 module Octo
 
   # Storage for Notifications
-  class GcmNotification
-    include Cequel::Record
+  class GcmNotification < MassiveRecord::ORM::Table
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
-    key :gcmid, :varchar
-    key :userid, :bigint
+    field :gcmid
+    field :userid, :integer
 
-    column :score, :float
-    column :ack, :boolean
-    column :sent_at, :timestamp
-    column :recieved_at, :timestamp
+    field :score, :integer
+    field :ack, :boolean
+    field :sent_at, :time
+    field :recieved_at, :time
 
   end
 end

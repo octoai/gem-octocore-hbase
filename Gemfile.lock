@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     octocore (0.0.6)
-      cequel (~> 1.9, >= 1.9.0)
       descriptive_statistics (~> 2.5.1, >= 2.5.0)
       elasticsearch (~> 1.0.17, >= 1.0.17)
       faraday (~> 0.9.2, >= 0.9.2)
@@ -10,6 +9,7 @@ PATH
       hooks (~> 0.4.1, >= 0.4.1)
       json (~> 1.8.1, >= 1.8.1)
       mandrill-api (~> 1.0, >= 1.0.53)
+      massive_record (~> 0.2.2, >= 0.2.2)
       rake (~> 11.1.0, >= 11.1.0)
       redis (~> 3.2.2, >= 3.2.0)
       redis-queue (~> 0.0.4, >= 0.0.4)
@@ -17,25 +17,17 @@ PATH
       resque-scheduler (~> 4.1.0, >= 4.1.0)
       ruby-kafka (~> 0.3.2, >= 0.3.2)
       statsd-ruby (~> 1.3.0, >= 1.3.0)
+      thrift (= 0.6.0, = 0.6.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (4.2.7.1)
-      activesupport (= 4.2.7.1)
-      builder (~> 3.1)
-    activesupport (4.2.7.1)
-      i18n (~> 0.7)
-      json (~> 1.7, >= 1.7.7)
-      minitest (~> 5.1)
-      thread_safe (~> 0.3, >= 0.3.4)
-      tzinfo (~> 1.1)
-    builder (3.2.2)
-    cassandra-driver (2.1.6)
-      ione (~> 1.2)
-    cequel (1.10.0)
-      activemodel (~> 4.0)
-      cassandra-driver (~> 2.0)
+    activemodel (3.0.20)
+      activesupport (= 3.0.20)
+      builder (~> 2.1.2)
+      i18n (~> 0.5.0)
+    activesupport (3.0.20)
+    builder (2.1.2)
     descriptive_statistics (2.5.1)
     diff-lcs (1.2.5)
     elasticsearch (1.0.18)
@@ -52,13 +44,16 @@ GEM
     hiredis (0.6.1)
     hooks (0.4.1)
       uber (~> 0.0.14)
-    i18n (0.7.0)
-    ione (1.2.3)
+    i18n (0.5.4)
     json (1.8.3)
     mandrill-api (1.0.53)
       excon (>= 0.16.0, < 1.0)
       json (>= 1.7.7, < 2.0)
-    minitest (5.9.0)
+    massive_record (0.2.2)
+      activemodel (~> 3.0.7)
+      activesupport (~> 3.0.7)
+      thrift (= 0.6.0)
+      tzinfo
     mono_logger (1.1.0)
     multi_json (1.12.1)
     multipart-post (2.0.0)
@@ -90,7 +85,7 @@ GEM
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
-    rspec-core (3.5.2)
+    rspec-core (3.5.3)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -107,6 +102,7 @@ GEM
       tilt (>= 1.3, < 3)
     statsd-ruby (1.3.0)
     thread_safe (0.3.5)
+    thrift (0.6.0)
     tilt (2.0.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -122,3 +118,6 @@ DEPENDENCIES
   parallel_tests (~> 2.5.0, >= 2.5.0)
   rake
   rspec
+
+BUNDLED WITH
+   1.11.2

@@ -11,12 +11,12 @@ module Octo
 
     # Define the columns needed for Trends
     def trendable
-      key :type, :int
-      key :ts, :timestamp
-      key :rank, :int
+      field :type, :integer
+      field :ts, :time
+      field :rank, :integer
 
-      column :score, :float
-      column :uid, :text
+      column :score, :integer
+      column :uid
 
       generate_aggregators { |ts, method|
         trendtype = method_names_type_counter(method)

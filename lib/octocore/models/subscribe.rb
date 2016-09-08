@@ -1,13 +1,12 @@
-require 'cequel'
+require 'massive_record'
 
 # Model for Subscribe to us (in the footer), on the microsite
 module Octo
 
-  class Subscriber
-    include Cequel::Record
+  class Subscriber < MassiveRecord::ORM::Table
 
-    key :created_at, :timestamp
-    key :email, :text
+    field :created_at, :time
+    field :email
 
   end
 end

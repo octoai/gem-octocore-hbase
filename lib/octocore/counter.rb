@@ -34,11 +34,11 @@ module Octo
 
     # Define the columns necessary for counter model
     def countables
-      key :type, :int
-      key :ts, :timestamp
-      key :uid, :text
+      field :type, :integer
+      field :ts, :time
+      field :uid
 
-      column :count, :bigint
+      field :count, :integer
 
       generate_aggregators { |ts, method|
         totype = method_names_type_counter(method)
