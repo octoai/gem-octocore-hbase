@@ -1,1 +1,0 @@
-require 'octocore/mailer/subscriber_mailer'
