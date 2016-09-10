@@ -27,6 +27,8 @@ require 'octocore-hbase/helpers'
 require 'octocore-hbase/kafka_bridge'
 require 'octocore-hbase/stats'
 
+require 'active_support'
+
 # The main Octo module
 module Octo
 
