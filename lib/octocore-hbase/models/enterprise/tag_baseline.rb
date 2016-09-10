@@ -8,7 +8,7 @@ module Octo
     extend Octo::Baseline
     extend Octo::Scheduleable
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     baselineable
 

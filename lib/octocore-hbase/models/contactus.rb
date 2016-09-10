@@ -14,7 +14,7 @@ module Octo
       field :message
     end
 
-    attr_accessor :email, :created_at, :typeofrequest, :firstname,
+    attr_accessible :email, :created_at, :typeofrequest, :firstname,
       :lastname, :message
 
   end

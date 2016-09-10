@@ -5,7 +5,7 @@ module Octo
   class Product < MassiveRecord::ORM::Table
     include Octo::Record
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :id, :integer
@@ -20,7 +20,7 @@ module Octo
       timestamps
     end
 
-    attr_accessor :id, :price, :name, :routeurl,
+    attr_accessible :id, :price, :name, :routeurl,
       :categories, :tags
 
   end

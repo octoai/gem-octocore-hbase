@@ -9,8 +9,10 @@ module Octo
 
     # Define the columns necessary for a trendable model
     def trendables
-      field :divergence, :integer
-      field :obp, :integer
+      column_family :info do
+        field :divergence, :integer
+        field :obp, :integer
+      end
     end
 
     # Define the baseline class for this trend

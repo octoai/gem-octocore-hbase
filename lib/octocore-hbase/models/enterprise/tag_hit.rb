@@ -13,7 +13,7 @@ module Octo
 
     COUNTERS = 20
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     countables
     trendables

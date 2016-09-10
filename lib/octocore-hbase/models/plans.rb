@@ -14,7 +14,7 @@ module Octo
       field :name
     end
 
-    attr_accessor :id, :active, :name
+    attr_accessible :id, :active, :name
 
   end
 end

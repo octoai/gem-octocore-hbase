@@ -18,5 +18,8 @@ module Octo
       field :weight, :integer
     end
 
+    attr_accessible :enterprise_id, :p1, :direction,
+      :p2, :weight
+
   end
 end

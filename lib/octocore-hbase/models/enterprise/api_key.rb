@@ -9,5 +9,7 @@ module Octo
       field :enterprise_id
     end
 
+    attr_accessible :enterprise_key, :enterprise_id
+
   end
 end

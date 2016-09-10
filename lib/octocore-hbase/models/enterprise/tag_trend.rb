@@ -7,7 +7,7 @@ module Octo
   class TagTrend < MassiveRecord::ORM::Table
     extend Octo::Trends
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     trendable
 

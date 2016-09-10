@@ -9,7 +9,7 @@ module Octo
     LOW_ENGAGED = 2
     DEAD = 3
 
-    belongs_to :user, class_name: 'Octo::User'
+    #belongs_to :user, class_name: 'Octo::User'
 
     column_family :info do
 
@@ -20,6 +20,9 @@ module Octo
       field :trending, :hash
       field :engagement, :integer
     end
+
+    attr_accessible :ts, :categories, :tags, :trending,
+      :engagement
 
     def engaged_text
       _engaged_text self.engagement

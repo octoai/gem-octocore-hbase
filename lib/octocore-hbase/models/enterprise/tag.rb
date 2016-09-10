@@ -5,14 +5,14 @@ module Octo
   class Tag < MassiveRecord::ORM::Table
     include Octo::Record
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :tag_text
       timestamps
     end
 
-    attr_accessor :tag_text
+    attr_accessible :tag_text
 
   end
 end

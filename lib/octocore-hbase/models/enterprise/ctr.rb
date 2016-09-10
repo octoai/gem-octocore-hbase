@@ -10,7 +10,7 @@ module Octo
     # Type of Ctr. Reserved for future use
     NEWSFEED = 0
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :ts, :time

@@ -11,12 +11,14 @@ module Octo
 
     # Define the columns needed for Trends
     def trendable
-      field :type, :integer
-      field :ts, :time
-      field :rank, :integer
+      column_family :info do
+        field :type, :integer
+        field :ts, :time
+        field :rank, :integer
 
-      column :score, :integer
-      column :uid
+        field :score, :integer
+        field :uid
+      end
 
       generate_aggregators { |ts, method|
         trendtype = method_names_type_counter(method)
@@ -71,7 +73,7 @@ module Octo
 
     # Define the class for which trends shall be found
     def trend_for(klass)
-      unless klass.constantize.ancestors.include?Cequel::Record
+      unless klass.constantize.ancestors.include?MassiveRecord::ORM::Table
         raise ArgumentError, "Class #{ klass } does not represent a DB Model"
       else
         @trend_for = klass

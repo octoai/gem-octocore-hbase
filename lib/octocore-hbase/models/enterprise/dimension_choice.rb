@@ -8,14 +8,16 @@ module Octo
 
     include Octo::Record
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
     column_family :info do
 
-      field :dimension, :int
+      field :dimension, :integer
       field :choice
 
       timestamps
     end
+
+    attr_accessible :dimension, :choice
 
   end
 end

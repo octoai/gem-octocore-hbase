@@ -10,7 +10,7 @@ module Octo
 
     column_family :info do
       field :id
-      field :name, :varchar
+      field :name
     end
 
     attr_accessible :id, :name
@@ -39,5 +39,5 @@ module Octo
     end
 
   end
-
 end
+

@@ -1,4 +1,4 @@
-require 'massive_record/record'
+require 'massive_record'
 
 module Octo
 
@@ -6,7 +6,7 @@ module Octo
     # Types of Engagement
     NEWSFEED = 0
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
 
@@ -19,7 +19,7 @@ module Octo
       timestamps
     end
 
-    attr_accessor :engagement_type, :counter_type, :ts, :time
+    attr_accessible :engagement_type, :counter_type, :ts, :time
 
 
     def self.fakedata(args)

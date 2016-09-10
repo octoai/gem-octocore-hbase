@@ -3,7 +3,7 @@ require 'massive_record'
 module Octo
   class UserPhoneDetails < MassiveRecord::ORM::Table
 
-    belongs_to :user, class_name: 'Octo::User'
+    #belongs_to :user, class_name: 'Octo::User'
 
     column_family :info do
 
@@ -14,6 +14,9 @@ module Octo
 
       timestamps
     end
+
+    attr_accessible :deviceid, :manufacturer, :model,
+      :os
   end
 end
 

@@ -8,7 +8,7 @@ module Octo
   class Segment < MassiveRecord::ORM::Table
     include Octo::Record
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :name_slug       # Name slug as field

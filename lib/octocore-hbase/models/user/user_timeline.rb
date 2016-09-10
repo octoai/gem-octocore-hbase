@@ -21,7 +21,7 @@ module Octo
     LOC_OOH         = 15
     LOC_OTHERS      = 16
 
-    belongs_to :user, class_name: 'Octo::User'
+    #belongs_to :user, class_name: 'Octo::User'
 
     column_family :info do
 

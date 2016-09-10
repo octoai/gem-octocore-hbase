@@ -11,7 +11,7 @@ module Octo
 
     include Octo::Record
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
     column_family :info do
 
       field :name_slug
@@ -23,7 +23,7 @@ module Octo
       timestamps
     end
 
-    attr_accessor :name_slug, :funnel, :name, :active
+    attr_accessible :name_slug, :funnel, :name, :active
 
 
     # Generates a new funnel from the pages provided

@@ -2,7 +2,7 @@ require 'massive_record'
 
 module Octo
   class PageView < MassiveRecord::ORM::Table
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
 
@@ -12,6 +12,6 @@ module Octo
       field :routeurl
     end
 
-    attr_accessor :userid, :created_at, :routeurl
+    attr_accessible :userid, :created_at, :routeurl
   end
 end

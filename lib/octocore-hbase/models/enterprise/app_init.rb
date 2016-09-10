@@ -4,7 +4,7 @@ module Octo
   class AppInit < MassiveRecord::ORM::Table
 
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :created_at, :time

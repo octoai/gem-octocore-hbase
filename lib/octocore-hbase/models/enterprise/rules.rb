@@ -11,7 +11,7 @@ module Octo
     WEEKENDS            = 2
     ALTERNATE           = 3
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :name_slug       # Name slug as rule
@@ -20,7 +20,7 @@ module Octo
       field :name         # Name of the rule
       field :segment      # slug name of segment
       field :template_cat
-      field :duration, :int     # Daily, weekly, weekends ,alternate days
+      field :duration, :integer     # Daily, weekly, weekends ,alternate days
       field :start_time, :time
       field :end_time, :time
 

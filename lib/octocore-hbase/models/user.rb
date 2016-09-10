@@ -3,15 +3,14 @@ require 'massive_record'
 module Octo
   class User < MassiveRecord::ORM::Table
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :id, :integer
+      timestamps
     end
 
-    attr_accessor :id
-
-    timestamps
+    attr_accessible :id
 
     references_many :user_location_histories,
       records_starts_from: :refs_starts_from,

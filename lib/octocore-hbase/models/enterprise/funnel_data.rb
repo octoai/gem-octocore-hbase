@@ -7,7 +7,7 @@ module Octo
   class FunnelData < MassiveRecord::ORM::Table
     include Octo::Record
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
 
@@ -16,6 +16,8 @@ module Octo
       field :ts, :time
       field :value, :array
     end
+
+    attr_accessible :funnel_slug, :ts, :value
 
 
   end

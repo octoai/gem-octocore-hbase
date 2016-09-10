@@ -7,7 +7,7 @@ module Octo
     # Types of pageloads
     NEWSFEED = 0
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :pageload_type, :integer
@@ -19,7 +19,7 @@ module Octo
       timestamps
     end
 
-    attr_accessor :pageload_type, :counter_type, :ts, :time
+    attr_accessible :pageload_type, :counter_type, :ts, :time
 
     def self.fakedata(args)
       res = self.where(args)

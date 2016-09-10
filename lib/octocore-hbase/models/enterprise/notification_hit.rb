@@ -13,7 +13,7 @@ module Octo
 
     max_type Octo::Counter::TYPE_DAY
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     countables
 

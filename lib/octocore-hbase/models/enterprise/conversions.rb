@@ -13,7 +13,7 @@ module Octo
     PUSH_NOTIFICATION   = 1
     EMAIL               = 2
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
       field :type, :integer
@@ -22,7 +22,7 @@ module Octo
       field :value, :integer
     end
 
-    attr_accessor :type, :ts, :value
+    attr_accessible :type, :ts, :value
 
     class << self
 

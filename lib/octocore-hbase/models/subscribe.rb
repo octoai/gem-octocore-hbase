@@ -10,7 +10,7 @@ module Octo
       field :email
     end
 
-    attr_accessor :created_at, :email
+    attr_accessible :created_at, :email
 
   end
 end

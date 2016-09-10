@@ -5,7 +5,7 @@ module Octo
   # Storage for Notifications
   class GcmNotification < MassiveRecord::ORM::Table
 
-    belongs_to :enterprise, class_name: 'Octo::Enterprise'
+    #belongs_to :enterprise, class_name: 'Octo::Enterprise'
 
     column_family :info do
 
@@ -19,7 +19,7 @@ module Octo
 
     end
 
-    attr_accessor :gcmid, :userid, :score, :ack, :sent_at,
+    attr_accessible :gcmid, :userid, :score, :ack, :sent_at,
       :recieved_at
   end
 end

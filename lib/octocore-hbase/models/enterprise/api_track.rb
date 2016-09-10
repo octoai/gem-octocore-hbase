@@ -8,7 +8,7 @@ module Octo
       field :customid
       field :created_at, :time
       field :json_dump
-      field :type, index: true
+      field :type
 
     end
 

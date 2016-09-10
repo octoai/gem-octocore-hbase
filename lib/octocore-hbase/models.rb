@@ -219,7 +219,7 @@ end
 
 
 require 'octocore-hbase/models/enterprise'
-require 'octocore-hbase/models/enterprise-observer'
+require 'octocore-hbase/models/enterprise_observer'
 require 'octocore-hbase/models/enterprise/adapter_details'
 require 'octocore-hbase/models/enterprise/api_event'
 require 'octocore-hbase/models/enterprise/api_hit'
