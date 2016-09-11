@@ -1,15 +1,15 @@
-require 'cequel'
+require 'massive_record'
 require 'yaml'
 require 'redis'
 require 'rspec/core/rake_task'
-
-require 'octocore/helpers/kong_helper'
-require 'octocore/config'
+require 'octocore-hbase/helpers/kong_helper'
+require 'octocore-hbase/config'
+require 'octocore-hbase/utils'
 
 RSpec::Core::RakeTask.new('spec')
 
 task :environment do
-  config_dir = ENV['CONFIG_DIR'] || 'lib/octocore/config/'
+  config_dir = ENV['CONFIG_DIR'] || 'lib/octocore-hbase/config/'
   config = {}
   Dir[config_dir + '**{,/*/**}/*.yml'].each do |file|
     _config = YAML.load_file(file)
@@ -19,37 +19,32 @@ task :environment do
     end
   end
   Octo.load_config config
-  connection = Cequel.connect(Octo.get_config(:cassandra))
-  Cequel::Record.connection = connection
-end
 
-# Load default tasks from Cequel
-spec = Gem::Specification.find_by_name 'cequel'
-load "#{spec.gem_dir}/lib/cequel/record/tasks.rb"
-
-# Remove those tasks from cequel which we shall override
-%w(cequel:init cequel:migrate cequel:reset).each do |t|
-  Rake.application.instance_variable_get('@tasks').delete(t)
+  MassiveRecord::ORM::Base.connection_configuration = Octo.get_config(:hbase)
 end
 
 # Overriding rake actions
 namespace :octo do
 
   desc 'Create keyspace and tables for all defined models'
-  task :init => %w(environment cequel:keyspace:create octo:migrate)
+  task :init => %w(environment octo:migrate)
 
   desc 'Drop keyspace if exists, then create and migrate'
   task :reset => :environment do
     kong_delete
     clear_cache
-    if Cequel::Record.connection.schema.exists?
-      task('cequel:keyspace:drop').invoke
-    end
-    task('cequel:keyspace:create').invoke
+
+    drop
+
     migrate
   end
 
-  desc "Synchronize all models defined in `lib/octocore/models' with Cassandra " \
+  desc "Delete all tables"
+  task :drop => :environment do
+    drop
+  end
+
+  desc "Synchronize all models defined in `lib/octocore-hbase/models' with HBase " \
        "database schema"
   task :migrate => :environment do
     migrate
@@ -75,68 +70,80 @@ def clear_cache
   puts 'Cache Cleaned'
 end
 
-def migrate
+def drop
+
   watch_stack = ActiveSupport::Dependencies::WatchStack.new
-
-  migration_table_names = Set[]
-
-  classes = Set[]
+  watch_namespaces = ['Octo']
+  watch_stack.watch_namespaces(watch_namespaces)
 
   project_root = Dir.pwd
-  models_dir_path = "#{File.expand_path('lib/octocore/models', project_root)}/"
+  models_dir_path = "#{File.expand_path('lib/octocore-hbase/models', project_root)}/"
   model_files = Dir.glob(File.join(models_dir_path, '**', '*.rb'))
 
   model_files.sort.each do |file|
-    watch_namespaces = ["Object"]
-    model_file_name = file.sub(/^#{Regexp.escape(models_dir_path)}/, "")
-    dirname = File.dirname(model_file_name)
-    watch_namespaces << dirname.classify unless dirname == "."
     watch_stack.watch_namespaces(watch_namespaces)
-
     require_dependency(file)
-
     new_constants = watch_stack.new_constants
-    if new_constants.empty?
-      _new = model_file_name.sub(/\.rb$/, "")
-      if Octo.constants.include?_new.classify.to_sym
-        new_constants << "Octo"
-      else
-        new_constants << "Octo"
-        #new_constants << _new.classify
+
+    new_constants.each do |konst|
+      if Octo.const_get(konst).ancestors.include?(MassiveRecord::ORM::Table)
+        clazz = konst.constantize
+        table_exists = clazz.send(:table_exists?)
+        if table_exists
+          clazz.send(:table).send(:destroy)
+          puts "Deleted table: #{ clazz }"
+        else
+          puts "Table does not exist : #{ clazz }"
+        end
       end
     end
 
-    new_constants.each do |class_name|
-      begin
-        clazz = class_name.constantize
-      rescue LoadError, RuntimeError, NameError => e
-        puts e
-      else
-        if clazz.is_a?(Class)
-          if clazz.ancestors.include?(Cequel::Record) &&
-              !migration_table_names.include?(clazz.table_name.to_sym)
-            clazz.synchronize_schema
-            migration_table_names << clazz.table_name.to_sym
-            puts "** Synchronized schema for #{class_name}"
-          end
-        elsif clazz.is_a?(Module)
-          method_name = :constants
-          clazzes = clazz.public_send(method_name) if clazz.respond_to? method_name
-          clazzes.each do |_clazz|
-            _cls = clazz.const_get(_clazz)
-            if _cls.is_a?(Class) and !classes.include?_cls
-              if _cls.ancestors.include?(Cequel::Record) &&
-                  !migration_table_names.include?(_cls.table_name.to_sym)
-                _cls.synchronize_schema
-                migration_table_names << _cls.table_name.to_sym
-                puts "Synchronized schema for #{_cls}"
-                classes << _cls
-              end
-            end
-          end
+  end
+
+end
+
+def migrate
+
+
+
+  watch_stack = ActiveSupport::Dependencies::WatchStack.new
+  watch_namespaces = ['Octo']
+  watch_stack.watch_namespaces(watch_namespaces)
+
+  project_root = Dir.pwd
+  models_dir_path = "#{File.expand_path('lib/octocore-hbase/models', project_root)}/"
+  model_files = Dir.glob(File.join(models_dir_path, '**', '*.rb'))
+
+  tables = {}
+
+  model_files.sort.each do |file|
+    watch_stack.watch_namespaces(watch_namespaces)
+    require_dependency(file)
+    new_constants = watch_stack.new_constants
+
+    new_constants.each do |konst|
+      if Octo.const_get(konst).ancestors.include?(MassiveRecord::ORM::Table)
+        clazz = konst.constantize
+        if clazz.send(:table_exists?)
+          puts "Table Exists: #{ clazz.send(:table_name) }"
+        else
+          tables[clazz.table_name] = clazz.column_families.collect { |x| x.name }
         end
       end
     end
   end
+
+
+  # We are creating HBase shell commands and passing them to hbase shell
+  # These hbase shell commands are create commands.
+  # This is a workaround for some of the issues mentioned at
+  # https://github.com/CompanyBook/massive_record/issues/95
+  tables.each do |name, col_families|
+    puts "Creating Table: #{ name }"
+    hbase_path = ENV['HBASE_PATH_BIN'] || Octo.get_config(:hbase_path_bin)
+    cmd = "echo \"create '#{ name }', '#{ col_families.join(',') }' \" |  #{ hbase_path }/hbase shell "
+    `#{ cmd }`
+  end
+
 end
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    octocore (0.0.6)
+    octocore-hbase (0.0.6)
       descriptive_statistics (~> 2.5.1, >= 2.5.0)
       elasticsearch (~> 1.0.17, >= 1.0.17)
       faraday (~> 0.9.2, >= 0.9.2)
@@ -111,10 +111,11 @@ GEM
       rack (>= 1.0.0)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
-  octocore!
+  octocore-hbase!
   parallel_tests (~> 2.5.0, >= 2.5.0)
   rake
   rspec

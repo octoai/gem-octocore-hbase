@@ -1,6 +1,6 @@
-# octo-core
+# octocore-hbase
 
-This is the Octomatic Enterprise Core gem. It provides most of the ORM stuff. Class and modules for different tables.
+This is the Octomatic Enterprise Core gem for HBase. It provides most of the ORM stuff, Class and modules for different HBase tables.
 
 ## Pre-Install
 
@@ -13,13 +13,13 @@ The below steps are for Mac. For your operating system, there must exist a way w
 ## Installting
 
 ```bash
-gem install octocore
+gem install octocore-hbase
 ```
 
 In case you are using bundler, you need to add something like this to your Gemfile:
 
 ```ruby
-gem 'octocore', :git => 'git@github.com:octoai/gem-octocore.git'
+gem 'octocore-hbase', :git => 'git@github.com:octoai/gem-octocore-hbase.git'
 ```
 
 #### Troubleshooting
@@ -29,15 +29,24 @@ gem 'octocore', :git => 'git@github.com:octoai/gem-octocore.git'
   - [http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install](http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install)
 
 
-## DB Migrations
+## DB Utilities
 
-### OctoAdmin CLI
+### Migrations
 
-This gem comes with a handy utility called `octocore-admin`. You can use this utility for db migrations, reset and init.
+For migrations it needs hbase binary directory's path as `HBASE_PATH_BIN`.
 
-```bash
-$ octocore-admin action path/to/config/dir
+```shell
+rake octo:migrate CONFIG_DIR=~/workspace/octo/current/config/ HBASE_PATH_BIN=/Users/pranav/etc/hbase-0.94.15-cdh4.7.1/bin
 ```
+
+### Drop
+
+Only `CONFIG_DIR` is required here.
+
+```shell
+rake octo:drop CONFIG_DIR=~/workspace/octo/current/config
+```
+
 
 Where
 
@@ -49,7 +58,7 @@ Where
 
 ## Clone the repo
 
-`$ git clone git@github.com:octoai/gem-octocore.git`
+`$ git clone git@github.com:octoai/gem-octocore-hbase.git`
 
 ## Building
 
@@ -68,7 +77,7 @@ $ rake spec
 You can use the following set of commands in `irb` to verify all things working with this gem. Execute it from irb in PROJ_DIR.
 
 ```ruby
-require 'octocore'
+require 'octocore-hbase'
 config_dir = '/path/to/config/dir'
 Octo.connect_with_config_file config_dir
 ```
@@ -78,5 +87,5 @@ Octo.connect_with_config_file config_dir
 It ships with a utility called `fakestream`. It will automatically stream random data. To use just open your console and type
 
 ```bash
-$ fakestream /path/to/config/dir
+$ fakestream-hbase /path/to/config/dir
 ```
