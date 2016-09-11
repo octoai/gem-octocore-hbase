@@ -2,8 +2,8 @@ module Octo
   module Config
 
     def self.included(base)
-      base.include InstanceMethods
-      base.extend ClassMethods
+      base.send(:include, InstanceMethods)
+      base.send(:extend, ClassMethods)
     end
 
     module InstanceMethods

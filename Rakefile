@@ -2,7 +2,6 @@ require 'massive_record'
 require 'yaml'
 require 'redis'
 require 'rspec/core/rake_task'
-
 require 'octocore-hbase/helpers/kong_helper'
 require 'octocore-hbase/config'
 require 'octocore-hbase/utils'
@@ -35,7 +34,6 @@ namespace :octo do
     kong_delete
     clear_cache
 
-    # todo Delete tables here
     drop
 
     migrate
@@ -106,6 +104,8 @@ end
 
 def migrate
 
+
+
   watch_stack = ActiveSupport::Dependencies::WatchStack.new
   watch_namespaces = ['Octo']
   watch_stack.watch_namespaces(watch_namespaces)
@@ -114,6 +114,8 @@ def migrate
   models_dir_path = "#{File.expand_path('lib/octocore-hbase/models', project_root)}/"
   model_files = Dir.glob(File.join(models_dir_path, '**', '*.rb'))
 
+  tables = {}
+
   model_files.sort.each do |file|
     watch_stack.watch_namespaces(watch_namespaces)
     require_dependency(file)
@@ -121,17 +123,26 @@ def migrate
 
     new_constants.each do |konst|
       if Octo.const_get(konst).ancestors.include?(MassiveRecord::ORM::Table)
-        puts "Synchronising Schema for: #{ konst }"
         clazz = konst.constantize
         if clazz.send(:table_exists?) == 'true'
-          puts "table exists"
+          puts "table #{ clazz.send(:table_name) } exists"
         else
-          puts 'Creating Table'
-          clazz.table.save
+          tables[clazz.table_name] = clazz.column_families.collect { |x| x.name }
         end
       end
     end
+  end
 
+
+  # We are creating HBase shell commands and passing them to hbase shell
+  # These hbase shell commands are create commands.
+  # This is a workaround for some of the issues mentioned at
+  # https://github.com/CompanyBook/massive_record/issues/95
+  tables.each do |name, col_families|
+    puts "Creating Table: #{ name }"
+    hbase_path = ENV['HBASE_PATH_BIN'] || Octo.get_config(:hbase_path_bin)
+    cmd = "echo \"create '#{ name }', '#{ col_families.join(',') }' \" |  #{ hbase_path }/hbase shell "
+    `#{ cmd }`
   end
 
 end

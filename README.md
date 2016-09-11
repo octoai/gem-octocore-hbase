@@ -29,15 +29,24 @@ gem 'octocore-hbase', :git => 'git@github.com:octoai/gem-octocore-hbase.git'
   - [http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install](http://stackoverflow.com/questions/5167829/how-can-i-pass-a-parameter-for-gem-installation-when-i-run-bundle-install)
 
 
-## DB Migrations
+## DB Utilities
 
-### OctoAdmin CLI
+### Migrations
 
-This gem comes with a handy utility called `octocore-admin`. You can use this utility for db migrations, reset and init.
+For migrations it needs hbase binary directory's path as `HBASE_PATH_BIN`.
 
-```bash
-$ octocore-admin-hbase action path/to/config/dir
+```shell
+rake octo:migrate CONFIG_DIR=~/workspace/octo/current/config/ HBASE_PATH_BIN=/Users/pranav/etc/hbase-0.94.15-cdh4.7.1/bin
 ```
+
+### Drop
+
+Only `CONFIG_DIR` is required here.
+
+```shell
+rake octo:drop CONFIG_DIR=~/workspace/octo/current/config
+```
+
 
 Where
 
