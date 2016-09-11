@@ -91,9 +91,9 @@ def drop
         table_exists = clazz.send(:table_exists?)
         if table_exists
           clazz.send(:table).send(:destroy)
-          puts "Deleted class: #{ clazz }"
+          puts "Deleted table: #{ clazz }"
         else
-          puts "Does not exist Class : #{ clazz }"
+          puts "Table does not exist : #{ clazz }"
         end
       end
     end
@@ -124,8 +124,8 @@ def migrate
     new_constants.each do |konst|
       if Octo.const_get(konst).ancestors.include?(MassiveRecord::ORM::Table)
         clazz = konst.constantize
-        if clazz.send(:table_exists?) == 'true'
-          puts "table #{ clazz.send(:table_name) } exists"
+        if clazz.send(:table_exists?)
+          puts "Table Exists: #{ clazz.send(:table_name) }"
         else
           tables[clazz.table_name] = clazz.column_families.collect { |x| x.name }
         end
