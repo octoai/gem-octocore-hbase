@@ -1,4 +1,5 @@
 require 'massive_record'
+require 'securerandom'
 
 module Octo
   class Enterprise < MassiveRecord::ORM::Table
@@ -36,6 +37,10 @@ module Octo
 
     def refs_starts_from
        "#{self.class.to_s}-#{id}-"
+    end
+
+    def next_id
+      SecureRandom.uuid
     end
 
   end

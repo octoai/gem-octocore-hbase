@@ -17,6 +17,13 @@ module Octo
     attr_accessible :email, :created_at, :typeofrequest, :firstname,
       :lastname, :message
 
+    def default_id
+      next_id
+    end
+
+    def next_id(options = {})
+    end
+
   end
 end
 

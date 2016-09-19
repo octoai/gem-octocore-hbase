@@ -13,7 +13,7 @@ module Octo
 
       field :enterprise_id
       field :email
-      field :apifield
+      field :apikey
       field :session_token
       field :custom_id
       field :password
@@ -21,7 +21,13 @@ module Octo
       timestamps
     end
 
-    attr_accessible :username, :enterprise_id, :email, :apifield,
+    attr_accessible :username, :enterprise_id, :email, :apikey,
       :session_token, :custom_id, :password, :admin
   end
+
+  def next_id
+    SecureRandom.uuid
+  end
+
 end
+
