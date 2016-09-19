@@ -1,4 +1,4 @@
-# octocore-hbase
+ctocore-hbase
 
 This is the Octomatic Enterprise Core gem for HBase. It provides most of the ORM stuff, Class and modules for different HBase tables.
 

@@ -2,6 +2,7 @@ module Octo
   class AuthorizationObserver < MassiveRecord::ORM::Observer
 
     def before_create(auth)
+      Octo.logger.debug "Before create of #{ auth }"
       check_api_field(auth)
       generate_password(auth)
     end
@@ -18,8 +19,8 @@ module Octo
 
     # Check or Generate client apifield
     def check_api_field(auth)
-      if(auth.apifield.nil?)
-        auth.apifield = SecureRandom.hex
+      if(auth.apikey.nil?)
+        auth.apikey = SecureRandom.hex
       end
     end
 
