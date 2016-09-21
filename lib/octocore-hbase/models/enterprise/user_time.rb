@@ -5,6 +5,10 @@ require 'securerandom'
 module Octo
   class UserTime < MassiveRecord::ORM::Table
 
+    # Any event that happens within this TIME_WINDOW
+    # will be treated as one event
+    TIME_WINDOW = 10.minutes
+
     column_family :info do
       field :enterpriseid
       field :userid
