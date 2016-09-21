@@ -266,6 +266,7 @@ require 'octocore-hbase/models/enterprise/tag_baseline'
 require 'octocore-hbase/models/enterprise/tag_trend'
 require 'octocore-hbase/models/enterprise/template'
 require 'octocore-hbase/models/enterprise/time_recommendations'
+require 'octocore-hbase/models/enterprise/user_time'
 
 require 'octocore-hbase/models/user'
 require 'octocore-hbase/models/user/push_token'
